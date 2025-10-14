@@ -1,4 +1,4 @@
-# Created with podman-5.6.2
+---
 apiVersion: v1
 kind: Pod
 metadata:
@@ -16,7 +16,7 @@ spec:
       value: xterm
     - name: HTTPLOG_JSON
       value: "%{+json}o %(client_ip)ci %(client_port)cp %(request_date)tr %(fe_name_transport)ft %(be_name)b %(server_name)s %(time_request)TR %(time_wait)Tw %(time_connect)Tc %(time_response)Tr/%(time_active)Ta %(status_code)ST %(bytes_read)B %(captured_request_cookie)CC %(captured_response_cookie)CS %(termination_state_cookie)tsc %(actconn)ac %(feconn)fc %(beconn)bc %(srv_conn)sc %(retries)rc %(srv_queue)sq %(backend_queue)bq %(captured_request_headers)hr %(captured_response_headers)hs %(http_request){+Q}r"
-    image: localhost/lb:latest
+    image: haproxy:lts-alpine
     name: lb
     ports:
     - containerPort: 8181
@@ -25,6 +25,9 @@ spec:
     - containerPort: 8383
       hostPort: 8383
     securityContext: {}
+    volumeMounts:
+      - name: haproxy-cfg-vol
+        mountPath: /usr/local/etc/haproxy/
     tty: true
   - args:
     - nginx
@@ -33,7 +36,7 @@ spec:
     env:
     - name: TERM
       value: xterm
-    image: localhost/web:latest
+    image: nginx:stable-alpine
     name: web1
     tty: true
   - args:
@@ -43,7 +46,7 @@ spec:
     env:
     - name: TERM
       value: xterm
-    image: localhost/web:latest
+    image: nginx:stable-alpine
     name: web2
     tty: true
   - args:
@@ -53,6 +56,10 @@ spec:
     env:
     - name: TERM
       value: xterm
-    image: localhost/web:latest
+    image: nginx:stable-alpine
     name: web3
     tty: true
+  volumes:
+    - name: haproxy-cfg-vol
+      configMap:
+        name: haproxy-cfg

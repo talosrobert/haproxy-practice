@@ -1,16 +1,11 @@
-.PHONY: build up down clean
-
-build:
-	podman build -t lb -f Containerfile ./lb; \
-	podman build -t web -f Containerfile ./web
+.PHONY: up down clean
 
 clean:
 	podman image prune; \
 	podman system prune -af
 
 up:
-	podman kube play pod.yaml
+	cat deploy/*yaml | podman kube play -
 
 down:
-	podman kube down pod.yaml; \
-	podman container prune -f
+	cat deploy/*yaml | podman kube down -
