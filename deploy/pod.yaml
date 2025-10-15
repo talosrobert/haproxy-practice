@@ -36,11 +36,49 @@ spec:
     env:
     - name: TERM
       value: xterm
-    image: nginx:stable-alpine
+    - name: NGINX_PORT
+      value: 8391
+    image: web
     name: web1
     volumeMounts:
       - name: nginx-cfg-vol
         mountPath: /etc/nginx/
+      - name: nginx-tmpl-vol
+        mountPath: /etc/nginx/templates/
+    tty: true
+  - args:
+    - nginx
+    - -g
+    - daemon off;
+    env:
+    - name: TERM
+      value: xterm
+    - name: NGINX_PORT
+      value: 8392
+    image: web
+    name: web2
+    volumeMounts:
+      - name: nginx-cfg-vol
+        mountPath: /etc/nginx/
+      - name: nginx-tmpl-vol
+        mountPath: /etc/nginx/templates/
+    tty: true
+  - args:
+    - nginx
+    - -g
+    - daemon off;
+    env:
+    - name: TERM
+      value: xterm
+    - name: NGINX_PORT
+      value: 8393
+    image: web
+    name: web3
+    volumeMounts:
+      - name: nginx-cfg-vol
+        mountPath: /etc/nginx/
+      - name: nginx-tmpl-vol
+        mountPath: /etc/nginx/templates/
     tty: true
   volumes:
     - name: haproxy-cfg-vol
@@ -49,3 +87,6 @@ spec:
     - name: nginx-cfg-vol
       configMap:
         name: nginx-cfg
+    - name: nginx-tmpl-vol
+      configMap:
+        name: nginx-tmpl
