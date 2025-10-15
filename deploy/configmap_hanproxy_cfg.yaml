@@ -116,6 +116,4 @@ data:
       http-check send meth GET uri / ver HTTP/1.1 hdr host nginx.web.dev
 
       # do not overload the servers (100 concurrent conns max each)
-      server web1 web1:80 cookie s1 maxconn 100 check inter 1s
-      server web2 web2:80 cookie s2 maxconn 100 check inter 1s
-      server web3 web3:80 cookie s3 maxconn 100 check inter 1s
+      server web1 web1:8391 cookie s1 maxconn 100 check inter 1s

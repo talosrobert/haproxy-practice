@@ -38,28 +38,14 @@ spec:
       value: xterm
     image: nginx:stable-alpine
     name: web1
-    tty: true
-  - args:
-    - nginx
-    - -g
-    - daemon off;
-    env:
-    - name: TERM
-      value: xterm
-    image: nginx:stable-alpine
-    name: web2
-    tty: true
-  - args:
-    - nginx
-    - -g
-    - daemon off;
-    env:
-    - name: TERM
-      value: xterm
-    image: nginx:stable-alpine
-    name: web3
+    volumeMounts:
+      - name: nginx-cfg-vol
+        mountPath: /etc/nginx/
     tty: true
   volumes:
     - name: haproxy-cfg-vol
       configMap:
         name: haproxy-cfg
+    - name: nginx-cfg-vol
+      configMap:
+        name: nginx-cfg
