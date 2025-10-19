@@ -21,5 +21,5 @@ down:
 	podman container rm lb web1
 
 test:
-	seq 1 500 | xargs -P8 -I{} curl -kq http://localhost:8383; \
+	seq 1 50 | xargs -P8 -I{} curl -kq http://localhost:8383; \
 	echo "show table st_src_appl_tcp" | socat stdio tcp4-connect:localhost:8181
