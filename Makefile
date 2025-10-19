@@ -1,5 +1,5 @@
 ROOT_DIR := $(dir $(realpath $(lastword $(MAKEFILE_LIST))))
-.PHONY: up up-haproxy up-nginx down clean
+.PHONY: up up-haproxy up-nginx down clean test
 
 clean:
 	podman image prune; \
@@ -19,3 +19,7 @@ up: up-nginx up-haproxy
 down:
 	podman container stop lb web1; \
 	podman container rm lb web1
+
+test:
+	seq 1 500 | xargs -P8 -I{} curl -kq http://localhost:8383; \
+	echo "show table st_src_appl_tcp" | socat stdio tcp4-connect:localhost:8181
