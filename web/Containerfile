@@ -1,4 +1,0 @@
-FROM nginx:stable-alpine
-ENV NGINX_ENVSUBST_OUTPUT_DIR=/appl/nginx/conf.d
-RUN mkdir -p /appl/nginx/conf.d
-RUN chown -R nginx:nginx /appl/nginx/conf.d
